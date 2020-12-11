@@ -1,0 +1,27 @@
+{
+  "name": "aws-sso-switcher",
+  "version": "1.0.0",
+  "description": "Internal Merapar CLI tool for changing currently used AWS SSO profile for AWS CLI",
+  "main": "index.sh",
+  "bin": {
+    "sso-switch": "./index.sh"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/PatrykMilewski/aws-sso-switcher.git"
+  },
+  "keywords": [
+    "merapar",
+    "aws",
+    "sso",
+    "profile",
+    "switcher",
+    "aws-cli"
+  ],
+  "author": "Chris Birkinshaw, Patryk Milewski",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/PatrykMilewski/aws-sso-switcher/issues"
+  },
+  "homepage": "https://github.com/PatrykMilewski/aws-sso-switcher#readme"
+}
