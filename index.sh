@@ -28,7 +28,7 @@ eval $(grep = <(grep -A3 "\[profile ${profile}\]" ~/.aws/config))
 echo "role_arn = ${role_arn}"
 echo "source_profile = ${source_profile}"
 
-creds=$(aws sts assume-role --profile "${source_profile}" --role-arn "${role_arn}" --role-session-name console-temp-role --duration-seconds duration)
+creds=$(aws sts assume-role --profile "${source_profile}" --role-arn "${role_arn}" --role-session-name console-temp-role --duration-seconds "${duration}")
 
 AWS_ACCESS_KEY_ID=$(echo "$creds" | jq .Credentials.AccessKeyId -r)
 [ -z "$AWS_ACCESS_KEY_ID" ] && echo "ERROR: Failed to load AWS_ACCESS_KEY_ID"
