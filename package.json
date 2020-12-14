@@ -1,6 +1,6 @@
 {
   "name": "aws-sso-switcher",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Internal Merapar CLI tool for changing currently used AWS SSO profile for AWS CLI",
   "main": "index.sh",
   "bin": {
