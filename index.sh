@@ -6,6 +6,7 @@ unset AWS_SESSION_TOKEN
 unset profile
 unset role_arn
 unset source_profile
+duration=3600
 while :; do
   case "${1:-}" in
     --profile)
@@ -13,7 +14,7 @@ while :; do
       shift
       ;;
     --duration)
-      duration=${3}
+      duration=${2}
       shift
       ;;
     *)
