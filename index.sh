@@ -17,6 +17,10 @@ while :; do
       duration=${2}
       shift
       ;;
+    --store-access-keys)
+      storeAccessKeys="true"
+      shift
+      ;;
     *)
       break
   esac
@@ -33,12 +37,18 @@ creds=$(aws sts assume-role --profile "${source_profile}" --role-arn "${role_arn
 
 AWS_ACCESS_KEY_ID=$(echo "$creds" | jq .Credentials.AccessKeyId -r)
 [ -z "$AWS_ACCESS_KEY_ID" ] && echo "ERROR: Failed to load AWS_ACCESS_KEY_ID"
-export AWS_ACCESS_KEY_ID
 
 AWS_SECRET_ACCESS_KEY=$(echo "$creds"  | jq .Credentials.SecretAccessKey -r)
 [ -z "$AWS_SECRET_ACCESS_KEY" ] && echo "ERROR: Failed to load AWS_SECRET_ACCESS_KEY"
-export AWS_SECRET_ACCESS_KEY
 
 AWS_SESSION_TOKEN=$(echo "$creds"  | jq .Credentials.SessionToken -r)
 [ -z "$AWS_SESSION_TOKEN" ] && echo "ERROR: Failed to load AWS_SESSION_TOKEN"
-export AWS_SESSION_TOKEN
+
+if [[ "$storeAccessKeys" = "true" ]] ; then
+  aws configure set aws_access_key_id "$AWS_ACCESS_KEY_ID" --profile "${profile}"
+  aws configure set aws_secret_access_key "$AWS_SECRET_ACCESS_KEY" --profile "${profile}"
+else
+  export AWS_ACCESS_KEY_ID
+  export AWS_SECRET_ACCESS_KEY
+  export AWS_SESSION_TOKEN
+fi

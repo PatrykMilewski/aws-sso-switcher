@@ -5,7 +5,8 @@
 ```bash
 . sso-switch \
   --profile <aws-profile-name>  # AWS profile name, that can be found in ~/.aws/config
-  --duration <seconds>          # (Optional) How long does temp-credentials must be valid for, default 3600 seconds
+  --duration <seconds>          # (Optional) How long does temp-credentials must be valid for, max 3600 seconds
+  --store-access-keys           # is used, then credentials will be stored in ~/.aws/credentials instead of env vars
 ```
 
 ### Install and Setup
@@ -27,10 +28,13 @@ AWS_SESSION_TOKEN
 which later are used in your shell. Values for those variables are extracted out of Credentials,
 that are obtained with `aws sts assume-role` call.
 
+However, if you are going to use `--store-access-keys` switch, then temp credentials will be stored in
+`~/.aws/credentials` which is helpful for cases, when you cannot use env variables. 
+
 #### Warning
 
-To make it work, you need to have those env variables set in your current session. Because of this, if you simply
-run `sso-switch` without dot and space before command, it will start a new process, which will have those set up,
-but after process is finished, it will be simply cleared and won't affect your current process.
+If you are not using `--store-access-keys` switch, you need to have those env variables set in your current session. 
+Because of this, if you simply run `sso-switch` without `source` before command, it will start a new process, 
+which will have those set up, but after process is finished, it will be simply cleared and won't affect your current process.
 
-That's why it's improtant to use it this way `. sso-switch`
+That's why it's important to use it this way `source sso-switch`
