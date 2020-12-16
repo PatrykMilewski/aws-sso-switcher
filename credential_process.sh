@@ -32,4 +32,3 @@ then
 fi
 
 echo $creds | jq '.Credentials + {Version: 1}' -r
-
