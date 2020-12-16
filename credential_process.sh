@@ -25,8 +25,8 @@ creds=$(aws sts assume-role --profile ${source_profile} --role-arn ${role_arn} -
 return_code=$?
 if [ ! $return_code -eq 0 ]
 then
-   if echo $creds | grep "expired"; then
-    aws sso login --profile $source_profile
+   if echo $creds | grep -q "expired"; then
+    aws sso login --profile $source_profile > /dev/null 2>&1
     creds=$(aws sts assume-role --profile ${source_profile} --role-arn ${role_arn} --role-session-name console-temp-role 2>&1)
    fi
 fi
