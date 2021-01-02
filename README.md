@@ -7,6 +7,8 @@ source sso-switch \
   --profile <aws-profile-name>  # AWS profile name, that can be found in ~/.aws/config
 ```
 
+Or if sourcing is not possible, jump to "How to use it, when sourcing env vars is not possible?" paragraph.
+
 ### Install and Setup
 
 ```bash
@@ -79,3 +81,13 @@ Because those IDEs doesn't support sourcing the env variables before running tes
 second way, that was presented in paragraph above.
 
 To use the profile, simply export somewhere constant env variable `AWS_PROFILE=your-profile`
+
+### Caching
+
+This tool is caching credentials in case of using `sso-credential-process` for 30 minutes in 
+`~/.aws/sso-switcher/cache` directory, because without caching AWS CLI/SDK will always fetch new session tokens,
+which is very slow.
+
+Thanks to this, for AWS CLI the delay is smaller by 2 seconds and for AWS SDK it's even bigger gain (around 4 seconds).
+
+Caching cannot be disabled or configured.

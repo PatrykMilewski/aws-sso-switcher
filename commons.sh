@@ -1,5 +1,7 @@
 #!/bin/bash
 
+CACHE_DIRECTORY="${HOME}/.aws/sso-switcher/cache"
+
 assumeRole() {
   local profile=$1
   local echoDetails=$2
@@ -22,4 +24,43 @@ assumeRole() {
   fi
   CREDS="$creds"
   export CREDS
+}
+
+getCachedCreds() {
+  local profile=$1
+  if [ -f "${CACHE_DIRECTORY}/${profile}.json" ]; then
+    local validUntil=$(cat "${CACHE_DIRECTORY}/${profile}-valid-until")
+    local currentTime=$(date +'%s')
+    if [ "$currentTime" -lt "$validUntil" ]; then
+      CREDS=$(cat "${CACHE_DIRECTORY}/${profile}.json")
+      export CREDS
+    fi
+  fi
+}
+
+updateCache() {
+  local profile=$1
+  local creds=$2
+  (
+    mkdir -p "${CACHE_DIRECTORY}"
+    set -o noclobber
+    echo "$creds" >| "${CACHE_DIRECTORY}/${profile}.json" 2>&1
+    local currentTime=$(date +'%s')
+    local validUntil=$((currentTime + 1800))
+    echo "$validUntil" >| "${CACHE_DIRECTORY}/${profile}-valid-until" 2>&1
+  )
+}
+
+getCreds() {
+  local profile=$1
+  local echoDetails=$2
+
+  getCachedCreds "$profile"
+
+  if [ -z "$CREDS" ]; then
+    assumeRole "$profile" "$echoDetails"
+    updateCache "$profile" "$CREDS"
+  else
+    export CREDS
+  fi
 }

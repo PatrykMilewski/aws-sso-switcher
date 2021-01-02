@@ -1,6 +1,6 @@
 #!/bin/bash
 
-. sso-switch-commons
+source sso-switch-commons
 
 # unset vars because will be run in parent shell context using source command
 unset AWS_ACCESS_KEY_ID
@@ -19,10 +19,12 @@ while :; do
   shift
 done
 [ -z "$profile" ] && echo "ERROR: No profile provided"
-echo "Getting temp credentials for profile ${profile}"
+echo "Getting temporary credentials for profile ${profile}"
 grep "\[profile ${profile}\]" ~/.aws/config || echo "ERROR: Profile not found"
 
-assumeRole "$profile" "true"
+getCreds "$profile" "true"
+
+[ -z "$CREDS" ] && echo "ERROR: Failed to load temporary credentials"
 
 AWS_ACCESS_KEY_ID=$(echo "$CREDS" | jq .Credentials.AccessKeyId -r)
 [ -z "$AWS_ACCESS_KEY_ID" ] && echo "ERROR: Failed to load AWS_ACCESS_KEY_ID"

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-. sso-switch-commons
+source sso-switch-commons
 
 unset profile
 
@@ -17,7 +17,7 @@ done
 
 [ -z "$profile" ] && echo "ERROR: No profile provided"
 
-assumeRole "$profile"
+getCreds "$profile"
 
 [ -z "$CREDS" ] && echo "ERROR: Failed to load temporary credentials"
 
