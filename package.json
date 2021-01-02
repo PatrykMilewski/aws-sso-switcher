@@ -4,7 +4,8 @@
   "description": "Internal Merapar CLI tool for changing currently used AWS SSO profile for AWS CLI",
   "main": "index.sh",
   "bin": {
-    "sso-switch": "./index.sh"
+    "sso-switch": "./index.sh",
+    "sso-credential-process": "./credential_process.sh"
   },
   "repository": {
     "type": "git",
