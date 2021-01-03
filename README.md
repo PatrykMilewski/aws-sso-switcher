@@ -1,4 +1,7 @@
 # aws-sso-switcher
+<a href="https://www.npmjs.com/package/aws-sso-switcher">
+  <img src="https://img.shields.io/npm/v/aws-sso-switcher.svg" />
+</a>
 
 ### Install and Setup
 
