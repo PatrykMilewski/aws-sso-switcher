@@ -1,58 +1,11 @@
 # aws-sso-switcher
 
-### Usage
-
-```bash
-source sso-switch \
-  --profile <aws-profile-name>  # AWS profile name, that can be found in ~/.aws/config
-```
-
-Or if sourcing is not possible, jump to "How to use it, when sourcing env vars is not possible?" paragraph.
-
 ### Install and Setup
 
 ```bash
 npm install -g aws-sso-switcher
 ```
 Then set up your `~/.aws/config` to have profiles with SSO configuration, like in example:
-```
-[profile your-profile-sso]
-role_arn=arn:aws:iam::123456789012:role/ssoRoleName
-source_profile=sso-source-profile-name
-region=eu-west-1
-
-[profile sso-source-profile-name]
-sso_start_url = https://example.com
-sso_region = eu-central-1
-sso_account_id = 123456789012
-sso_role_name = SSORoleName
-region = eu-west-1
-```
-
-### How it works?
-
-To workaround problems with Serverless Framework and other tools, when trying to use AWS CLI v2 SSO feature,
-this script simply exports:
-```bash
-AWS_ACCESS_KEY_ID
-AWS_SECRET_ACCESS_KEY
-AWS_SESSION_TOKEN
-```
-which later are used in your shell. Values for those variables are extracted out of temporary Credentials,
-that are obtained with `aws sts assume-role` call.
-
-#### Warning
-
-You need to have those env variables set in your current session.
-Because of this, if you simply run `sso-switch` without `source` before command, it will start a new process,
-which will have those set up, but after process is finished, it will be simply cleared and won't affect your current process.
-
-That's why it's important to use it this way `source sso-switch`
-
-### How to use it, when sourcing env vars is not possible?
-
-If the application, that you are using, cannot source env variables with credentials before running something,
-then you have to create 2 separate profiles as you can see on the example:
 ```
 [profile your-profile-sso]
 role_arn=arn:aws:iam::123456789012:role/ssoRoleName
@@ -71,16 +24,45 @@ region = eu-west-1
 ```
 
 Now:
-- `your-profile-sso` can be used normally, when you can simply call `source sso-switch --profile your-profile-sso`
-- `your-profile` can be used in applications, by simply pointing it by `AWS_PROFILE=your-profile` or any other way
-of choosing active profile supported by AWS SDK
-  
-### Jetbrains IDEs (Webstorm, IntelliJ, Pycharm etc.)
+- `your-profile` can be used, by simply pointing it by `AWS_PROFILE=your-profile` or any other way
+  of choosing active profile supported by AWS SDK/CLI (`aws s3 ls --profile your-profile`)
+- `your-profile-sso` can be used normally by sourcing env variables with credentials, when you can simply 
+  call `source sso-switch --profile your-profile-sso`, then credentials will be available for the console
+  session, that called the command
 
-Because those IDEs doesn't support sourcing the env variables before running tests for example, you have to use the
-second way, that was presented in paragraph above.
+### How it works?
 
-To use the profile, simply export somewhere constant env variable `AWS_PROFILE=your-profile`
+#### sso-credential-process
+
+AWS CLI/SDK supports sourcing credentials by using external process, as it's described in
+[AWS docs.](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-sourcing-external.html)
+
+This tool uses this approach, which makes SSO transparent to developer.
+
+If you are having any problems with `sso-credential-process`, simply check if command 
+`sso-credential-process --profile your-profile-sso` outputs correct JSON with credentials or try removing the cache.
+
+#### sso-switch
+
+To workaround problems with Serverless Framework and other tools, when trying to use AWS CLI v2 SSO feature,
+this script simply exports:
+```bash
+AWS_ACCESS_KEY_ID
+AWS_SECRET_ACCESS_KEY
+AWS_SESSION_TOKEN
+```
+which later are used in your shell. Values for those variables are extracted out of temporary Credentials,
+that are obtained with `aws sts assume-role` call.
+
+You need to have those env variables set in your current session. Because of this, if you simply run 
+`sso-switch` without `source` before command, it will start a new process, which will have those set up, but 
+after process is finished, it will be simply cleared and won't affect your current process.
+
+That's why it's important to use it this way `source sso-switch`
+
+### Debugging Jetbrains IDEs (Webstorm, IntelliJ, Pycharm etc.)
+
+Simply use profile without `sso` suffix, by setting up env variable `AWS_PROFILE=your-profile`
 
 ### Caching
 
