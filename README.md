@@ -84,10 +84,15 @@ To use the profile, simply export somewhere constant env variable `AWS_PROFILE=y
 
 ### Caching
 
-This tool is caching credentials in case of using `sso-credential-process` for 30 minutes in 
-`~/.aws/sso-switcher/cache` directory, because without caching AWS CLI/SDK will always fetch new session tokens,
-which is very slow.
+This tool is caching credentials for 30 minutes in `~/.aws/sso-switcher/cache` directory, because without caching 
+AWS CLI/SDK will always fetch new session tokens, which is very slow.
 
-Thanks to this, for AWS CLI the delay is smaller by 2 seconds and for AWS SDK it's even bigger gain (around 4 seconds).
+Manually caching in that case is officially recommended in 
+[AWS docs.](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-sourcing-external.html)
 
-Caching cannot be disabled or configured.
+Cache can be cleared using this switch:
+```
+source sso-switch \
+  --profile <aws-profile-name> \
+  --clear-cache "true"
+```

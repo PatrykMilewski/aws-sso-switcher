@@ -1,8 +1,9 @@
 #!/bin/bash
 
-source sso-switch-commons
+source aws-sso-switcher-commons
 
 unset profile
+unset CREDS
 
 while :; do
   case "${1:-}" in
@@ -15,10 +16,10 @@ while :; do
   shift
 done
 
-[ -z "$profile" ] && echo "ERROR: No profile provided"
+[ -z "$profile" ] && die "ERROR: No profile provided"
 
 getCreds "$profile"
 
-[ -z "$CREDS" ] && echo "ERROR: Failed to load temporary credentials"
+[ -z "$CREDS" ] && die "ERROR: Failed to load temporary credentials"
 
 echo "$CREDS" | jq '.Credentials + {Version: 1}' -r
