@@ -27,6 +27,16 @@ sso_role_name = SSORoleName
 region = eu-west-1
 ```
 
+**CLEAR** your `~/.aws/credentials` file from any settings for profiles:
+- `[default]` (not sure if really required)
+- `[profile your-profile-sso]`
+- `[profile your-profile]`
+- `[profile sso-source-profile-name]`
+
+Setup constant env variables:
+- `AWS_PROFILE=your-profile`
+- `AWS_SDK_LOAD_CONFIG=1` - only needed for AWS SDK, forces to use `credential_process` by SDK
+
 Now:
 - `your-profile` can be used, by simply pointing it by `AWS_PROFILE=your-profile` or any other way
   of choosing active profile supported by AWS SDK/CLI (`aws s3 ls --profile your-profile`)
@@ -75,6 +85,11 @@ That's why it's important to use it this way `source sso-switch`
 ### Debugging Jetbrains IDEs (Webstorm, IntelliJ, Pycharm etc.)
 
 Simply use profile without `sso` suffix, by setting up env variable `AWS_PROFILE=your-profile`
+
+### Using with Jest
+
+Simply set env variables `AWS_PROFILE=your-profie` and `AWS_SDK_LOAD_CONFIG=1` before running tests. 
+Jest has a lot of different ways to achieve this.
 
 ### Caching
 
