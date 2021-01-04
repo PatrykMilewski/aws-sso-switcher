@@ -17,6 +17,7 @@ region=eu-west-1
 
 [profile your-profile]
 credential_process = sso-credential-process --profile your-profile-sso
+region=eu-west-1
 
 [profile sso-source-profile-name]
 sso_start_url = https://example.com
@@ -32,6 +33,14 @@ Now:
 - `your-profile-sso` can be used normally by sourcing env variables with credentials, when you can simply 
   call `source sso-switch --profile your-profile-sso`, then credentials will be available for the console
   session, that called the command
+  
+### Serverless Framework, Amplify etc.
+
+If you want to use SSO credentials with frameworks, that make use of AWS SDK/CLI for you, you might run into
+some problems.
+
+Recommended way of solving it is by simply using env variables sourcing with 
+`source sso-switch --profile your-profile-sso`
 
 ### How it works?
 
