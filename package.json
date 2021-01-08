@@ -6,6 +6,7 @@
   "bin": {
     "sso-switch": "./index.sh",
     "sso-credential-process": "./credential-process.sh",
+    "sso-wrapper": "./wrapper.sh",
     "aws-sso-switcher-commons": "./commons.sh"
   },
   "repository": {
