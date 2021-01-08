@@ -82,6 +82,14 @@ after process is finished, it will be simply cleared and won't affect your curre
 
 That's why it's important to use it this way `source sso-switch`
 
+#### sso-wrapper
+Another workaround for Serverless Framework issues is to use `sso-wrapper`. Set `AWS_PROFILE=your-profile` and run:
+```
+sso-wrapper -- serverless deploy
+```
+
+In general, you can run any command with `sso-wrapper`. It doesn't affect your current session.
+
 ### Debugging Jetbrains IDEs (Webstorm, IntelliJ, Pycharm etc.)
 
 Simply use profile without `sso` suffix, by setting up env variable `AWS_PROFILE=your-profile`
