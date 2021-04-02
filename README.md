@@ -3,6 +3,12 @@
   <img src="https://img.shields.io/npm/v/aws-sso-switcher.svg" />
 </a>
 
+## Alternative
+
+If you want to avoid credentials refresh and configure stuff using UI, please use this great tool:
+
+https://github.com/Noovolari/leapp
+
 ### Install and Setup
 
 ```bash
